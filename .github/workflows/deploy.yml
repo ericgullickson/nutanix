@@ -27,6 +27,7 @@ jobs:
       # Runs a set of commands using the runners shell
   test:
     runs-on: self-hosted
+    needs: build
     steps:
       - name: Run a multi-line script
         run: |
