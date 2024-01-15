@@ -22,7 +22,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Install NGINX on the runners
         run: dnf install nginx -y
       # Runs a set of commands using the runners shell
   test:
@@ -30,19 +30,19 @@ jobs:
     needs: build
     steps:
       - name: Get commit hash
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        id: commit
+        uses: prompt/actions-commit-hash@v3
       - name: Make sure the web server is running
         run: |
           echo Doing some cool tests
-          echo The commit hash is ${{ steps.vars.outputs.sha_short }}
+          echo The commit hash is ${{ steps.commit.outputs.short }}
   deploy:
     runs-on: self-hosted
     needs: test
     steps:
       - name: Get commit hash
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        id: commit
+        uses: prompt/actions-commit-hash@v3
       - name: Deploy app to VM's on Nutanix
-        run: "curl --request POST --url https://172.30.1.72:9440/api/nutanix/v3/blueprints/0d2e27d9-3a0d-9cf8-2901-c3d0d1aca323/simple_launch --header 'Accept: application/json' --header 'Authorization: Basic YWRtaW46ZWVOZ2FoNm1hZWc5b3V0ZWluZzlvb2ppMSE=' --header 'Content-Type: application/json' --insecure --data '{\"spec\":{\"app_name\":\"NCM API Demo App v${{ steps.vars.outputs.sha_short }}\",\"app_description\":\"NCM application launched via Nutanix REST API\",\"app_profile_reference\":{\"kind\": \"app_profile\",\"name\": \"Default\",\"uuid\": \"61d0573d-9106-57d3-d210-220befe306b6\"}}}'"
+        run: "curl --request POST --url https://172.30.1.72:9440/api/nutanix/v3/blueprints/0d2e27d9-3a0d-9cf8-2901-c3d0d1aca323/simple_launch --header 'Accept: application/json' --header 'Authorization: Basic YWRtaW46ZWVOZ2FoNm1hZWc5b3V0ZWluZzlvb2ppMSE=' --header 'Content-Type: application/json' --insecure --data '{\"spec\":{\"app_name\":\"NCM API Demo App v${{ steps.commit.outputs.short }}\",\"app_description\":\"NCM application launched via Nutanix REST API\",\"app_profile_reference\":{\"kind\": \"app_profile\",\"name\": \"Default\",\"uuid\": \"61d0573d-9106-57d3-d210-220befe306b6\"}}}'"
 
