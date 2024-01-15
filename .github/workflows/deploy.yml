@@ -32,7 +32,8 @@ jobs:
       - name: Make sure the web server is running
         run: |
           echo Doing some cool tests
-          echo just a testing machine
+          echo The commit SHA is
+          echo ${{ github.event.pull_request.head.sha }}
   deploy:
     runs-on: self-hosted
     needs: test
