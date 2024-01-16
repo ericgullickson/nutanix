@@ -44,5 +44,5 @@ jobs:
         id: commit
         uses: prompt/actions-commit-hash@v3
       - name: Deploy app to VM's on Nutanix
-        run: "curl --request POST --url https://172.30.1.72:9440/api/nutanix/v3/blueprints/0d2e27d9-3a0d-9cf8-2901-c3d0d1aca323/simple_launch --header 'Accept: application/json' --header 'Authorization: Basic YWRtaW46ZWVOZ2FoNm1hZWc5b3V0ZWluZzlvb2ppMSE=' --header 'Content-Type: application/json' --insecure --data '{\"spec\":{\"app_name\":\"NCM API Launched Demo Application\",\"app_description\":\"NCM application launched via Nutanix REST API\",\"app_profile_reference\":{\"kind\": \"app_profile\",\"name\": \"Default\",\"uuid\": \"61d0573d-9106-57d3-d210-220befe306b6\"}}}'"
+        run: "curl --request POST --url https://172.30.1.72:9440/api/nutanix/v3/blueprints/0d2e27d9-3a0d-9cf8-2901-c3d0d1aca323/simple_launch --header 'Accept: application/json' --header 'Authorization: Basic YWRtaW46ZWVOZ2FoNm1hZWc5b3V0ZWluZzlvb2ppMSE=' --header 'Content-Type: application/json' --insecure --data '{\"spec\":{\"app_name\":\"NCM API App Commit-${{ steps.commit.outputs.short }}\",\"app_description\":\"NCM application launched via Nutanix REST API\",\"app_profile_reference\":{\"kind\": \"app_profile\",\"name\": \"Default\",\"uuid\": \"61d0573d-9106-57d3-d210-220befe306b6\"}}}'"
 
