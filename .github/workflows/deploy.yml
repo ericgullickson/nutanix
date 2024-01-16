@@ -40,6 +40,8 @@ jobs:
     runs-on: self-hosted
     needs: test
     steps:
+      - name: Check out Repo
+        uses: actions/checkout@v3
       - name: Get commit hash
         id: commit
         uses: prompt/actions-commit-hash@v3
