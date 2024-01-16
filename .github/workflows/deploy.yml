@@ -47,4 +47,4 @@ jobs:
         uses: prompt/actions-commit-hash@v3
       - name: Deploy app to VM's on Nutanix
         shell: bash
-        run: ${GITHUB_WORKSPACE}/deploy_on_nutanix ${{ steps.commit.outputs.short }}
+        run: ${GITHUB_WORKSPACE}/deploy_on_nutanix.sh ${{ steps.commit.outputs.short }}
